@@ -175,8 +175,8 @@ def listar_programas(request: HttpRequest):
 
         return render(request, 'programas.html', {
             'form': ProgramaForm(),  # Ensure that ProgramaForm is correctly imported or defined
-            'data': data,
-            'server': servers  # Passing the original or formatted list to the template, as needed
+            'data': data  # ,
+            # 'server': servers  # Passing the original or formatted list to the template, as needed
         })
 
     # If not POST, just show the form

@@ -42,7 +42,7 @@
                 {% for item in data %}
                 <tr>
                     
-                    <td>{{ server }}</td>
+                    <td>{{ item|get_item:"PSComputerName" }}</td>
                     <td>{{ item|get_item:"Display Name" }}</td>
                     <td>{{ item|get_item:"Display Version" }}</td>
                     <td>{{ item|get_item:"Install Date" }}</td>
