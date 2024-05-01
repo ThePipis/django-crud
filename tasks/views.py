@@ -147,39 +147,41 @@ def listar_programas(request: HttpRequest):
                         for server in servers.splitlines() if server.strip()]
         # Formatea como array de PowerShell
         servers_formatted = '@("' + '","'.join(servers_list) + '")'
-        print("Formatted Servers for PowerShell:", servers_formatted)
-
-        script_path = os.path.join(os.path.dirname(
-            __file__), 'templates', 'scripts', 'listar-programas.ps1')
+        # print(servers_formatted)
+        script_path = os.path.join(
+            os.path.dirname(__file__), 'templates', 'scripts', 'listar-programas.ps1')
         ps_command = f"& '{script_path}' -ComputerName {servers_formatted} -Username '{usuario}' -Password '{password}'"
-        print("PowerShell Command:", ps_command)
+
         try:
             output = subprocess.run(
-                ps_command, capture_output=True, text=True, shell=True, timeout=60)
-            print("Raw output:", output.stdout)
+                ["powershell", "-Command", ps_command], capture_output=True, text=True, timeout=60)
+            # print("Raw output:", output.stdout)
             # Intenta cargar el JSON de la salida estándar
             data = json.loads(output.stdout)
-            print("JSON Data:", data)
+            print(type(data))
+            # print("JSON Data:", data)
         except json.JSONDecodeError as e:
             print("Failed to decode JSON:", e)
             data = []
         except subprocess.CalledProcessError as e:
-            print(f"Error executing PowerShell script: {e.output}")
+            print(f"Error al ejecutar el script de PowerShell: {e.output}")
             data = []
         except FileNotFoundError:
             print("Script file not found.")
             data = []
         except subprocess.TimeoutExpired as e:
-            print(f"PowerShell script timed out: {str(e)}")
+            print(
+                f"El script de PowerShell excedió el tiempo de espera: {str(e)}")
             data = []
 
         return render(request, 'programas.html', {
-            'form': ProgramaForm(),  # Ensure that ProgramaForm is correctly imported or defined
-            'data': data  # ,
-            # 'server': servers  # Passing the original or formatted list to the template, as needed
+            # Asegúrate de que ProgramaForm está correctamente importado o definido
+            'form': ProgramaForm(),
+            'data': data,
+            'server': servers  # Pasar la lista original o la formateada a la plantilla, según necesites
         })
 
-    # If not POST, just show the form
+    # Si no es POST, mostrar solo el formulario
     return render(request, 'programas.html', {
         'form': ProgramaForm()
     })

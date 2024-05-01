@@ -31,23 +31,23 @@
         <table id="example" class="display" style="width:100%">
             <thead  >
                 <tr>
-                    <td>ServerName</td>
-                    <td>displayname</td>
-                    <td>displayversion</td>
-                    <td>installdate</td>
-                 
+                    <th>Server Name</th>
+                    <th>Display Name</th>
+                    <th>Display Version</th>
+                    <th>Install Date</th>
+                    <th>Install For</th>
+                    <th>Install Location</th>
                 </tr>
             </thead>
             <tbody>                
                 {% for item in data %}
                 <tr>
-                    
                     <td>{{ item|get_item:"PSComputerName" }}</td>
                     <td>{{ item|get_item:"Display Name" }}</td>
                     <td>{{ item|get_item:"Display Version" }}</td>
                     <td>{{ item|get_item:"Install Date" }}</td>
-           
-                    
+                    <td>{{ item|get_item:"Install For" }}</td>
+                    <td>{{ item|get_item:"Install Location" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -56,7 +56,36 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('#example').DataTable();
+        $.extend(true, $.fn.dataTable.defaults,{
+
+            stateSave: true,
+            info:true,
+            searching: true,
+            ordering: true,
+            select: false,
+            layout: {
+                topStart: {
+                    buttons: [
+                        {
+                            extend: 'collection',
+                            className: 'custom-html-collection',
+                            buttons: [
+                                '<h6>Export</h6>',
+                                'pdf',
+                                'csv',
+                                'excel',
+                                '<h6 class="not-top-heading">Column Visibility</h6>',
+                                'columnsToggle'
+                            ]
+                        }
+                    ]
+                }
+            }
+        })
+        $('#example').DataTable({
+    
+     
+        });       
     });
 </script>
 {%endblock%}
