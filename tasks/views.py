@@ -147,7 +147,7 @@ def listar_programas(request: HttpRequest):
                         for server in servers.splitlines() if server.strip()]
         # Formatea como array de PowerShell
         servers_formatted = '@("' + '","'.join(servers_list) + '")'
-        # print(servers_formatted)
+        print(servers_formatted)
         script_path = os.path.join(
             os.path.dirname(__file__), 'templates', 'scripts', 'listar-programas.ps1')
         ps_command = f"& '{script_path}' -ComputerName {servers_formatted} -Username '{usuario}' -Password '{password}'"
@@ -155,11 +155,11 @@ def listar_programas(request: HttpRequest):
         try:
             output = subprocess.run(
                 ["powershell", "-Command", ps_command], capture_output=True, text=True, timeout=60)
-            # print("Raw output:", output.stdout)
+            print("Raw output:", output.stdout)
             # Intenta cargar el JSON de la salida estándar
-            data = json.loads(output.stdout)
-            print(type(data))
-            # print("JSON Data:", data)
+            data = json.loads(output.stdout if output.stdout else '[]')
+            # print(type(data))
+            print("JSON Data:", data)
         except json.JSONDecodeError as e:
             print("Failed to decode JSON:", e)
             data = []
