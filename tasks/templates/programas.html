@@ -1,0 +1,62 @@
+
+{% extends 'base.html' %}
+{% load my_filters %}
+{% block content%}
+<div class="container mb-2">
+    <div class="card-body">
+        <h3>Listar Programas</h3>
+        <form method="POST" class="d-flex align-items-center">
+            {% csrf_token %}
+            <div class="me-2 d-flex flex-column justify-content-center">
+                <label for="servername" class="form-label">Servername(s):</label>
+                <textarea class="form-control" id="servername" name="servername" class="form-control form-control-sm" rows="2" style="resize: none;"></textarea>
+            </div>
+            <div class="me-2 d-flex flex-column justify-content-center">
+                <label class="form-label">Usuario</label>
+                <input type="text" id="usuario" name="usuario" class="form-control form-control-sm" id="exampleFormControlInput1">
+            </div>
+            <div class="me-2 d-flex flex-column justify-content-center">
+                <label  class="form-label">Password</label>
+                <input type="password" id="password"  name="password"  class="form-control form-control-sm">
+            </div>
+            <!-- Ajuste del botón para alineación vertical -->
+            <div class=" align-items-center">
+                <button type="submit" class="btn btn-primary" style="height: 38px;">Cargar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <table id="example" class="display" style="width:100%">
+            <thead  >
+                <tr>
+                    <td>ServerName</td>
+                    <td>displayname</td>
+                    <td>displayversion</td>
+                    <td>installdate</td>
+                 
+                </tr>
+            </thead>
+            <tbody>                
+                {% for item in data %}
+                <tr>
+                    
+                    <td>{{ server }}</td>
+                    <td>{{ item|get_item:"Display Name" }}</td>
+                    <td>{{ item|get_item:"Display Version" }}</td>
+                    <td>{{ item|get_item:"Install Date" }}</td>
+           
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    });
+</script>
+{%endblock%}

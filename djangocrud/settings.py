@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^qbpia4g0s)hro1(q78pj(ezqvs%sp*tv1nm(9+&p0n%dhclbn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.18.56']
 
 
 # Application definition
@@ -112,6 +112,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+DATETIME_FORMAT = 'd M Y H:i'
+DATE_FORMAT = 'd M Y'
+TIME_FORMAT = 'H:i'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -122,3 +125,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# PARA REDIRECCIONAR TODAS LOS GET NO AUTORIZADOS A LA PLANTILLA DE INICIAR SESION
+LOGIN_URL = '/signin'
