@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{%block content%}
+<h1>Tasks Pending</h1>
+
+{%for task in tasks%}
+
+<ul>
+    <a href="{% url 'task_detail' task.id %}">
+    <li>
+        {%if task.important %}
+        <strong>{{task.title}}</strong>
+        {%else%}
+        {{task.title}}
+        {%endif%}
+        <p>{{task.description}}</p>
+        <p>{{task.user}}</p>
+        {{task.datacompleted|date:'M j Y:i'}}
+    </li>
+</a>
+</ul>
+
+{% endfor %}
+
+{%endblock%}
